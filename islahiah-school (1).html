@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Islahiah School — Yala, Thailand</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+/* ── TOKENS ── */
+:root{
+  --bg:       #F4F5F7;
+  --primary:  #B8C5D6;
+  --accent:   #5D84A0;
+  --deep:     #1E3D52;
+  --text:     #1A1E24;
+  --muted:    #6B7280;
+  --light:    #D6DDE8;
+  --rule:     #CBD3DE;
+  --serif:    'Cormorant Garamond', Georgia, serif;
+  --sans:     'DM Sans', sans-serif;
+}
+
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--deep);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform .1s,width .25s,height .25s,background .25s;
+  mix-blend-mode:multiply;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1.5px solid var(--accent);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform .18s cubic-bezier(.25,.46,.45,.94),
+             width .3s,height .3s,border-color .3s;
+}
+body:hover #cursor-ring{opacity:1;}
+.cursor-grow #cursor{width:20px;height:20px;background:var(--accent);}
+.cursor-grow #cursor-ring{width:56px;height:56px;border-color:var(--deep);}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:1rem 4rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.55);
+  box-shadow:0 4px 32px rgba(30,61,82,0.07);
+  transition:background .4s,padding .4s,box-shadow .4s;
+}
+.nav.scrolled{
+  background:rgba(244,245,247,0.82);
+  backdrop-filter:blur(32px);
+  -webkit-backdrop-filter:blur(32px);
+  padding:.75rem 4rem;
+  box-shadow:0 4px 24px rgba(30,61,82,0.12);
+  border-bottom:1px solid rgba(203,211,222,0.6);
+}
+.nav-left{
+  display:flex;align-items:center;gap:.9rem;
+}
+.nav-logo{
+  width:50px;height:50px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(93,132,160,0.35);
+  box-shadow:0 2px 10px rgba(30,61,82,0.15);
+  flex-shrink:0;
+  transition:transform .3s,box-shadow .3s;
+}
+.nav-logo:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(30,61,82,0.22);}
+.nav-logo-fallback{
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--deep),var(--accent));
+  display:none;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:.9rem;font-weight:600;color:#fff;
+  border:2px solid rgba(93,132,160,0.35);
+  flex-shrink:0;
+}
+.nav-brand{display:flex;flex-direction:column;text-decoration:none;}
+.nav-brand-main{
+  font-family:var(--serif);font-size:1.12rem;
+  font-weight:600;color:var(--deep);letter-spacing:.5px;line-height:1;
+}
+.nav-brand-sub{
+  font-size:.55rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-top:.22rem;font-weight:400;
+}
+.nav-links{display:flex;align-items:center;gap:2.8rem;}
+.nav-links a{
+  font-size:.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;font-weight:400;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--deep);}
+.nav-cta{
+  font-size:.7rem;letter-spacing:2px;text-transform:uppercase;
+  background:var(--deep);color:#fff !important;
+  padding:.6rem 1.6rem;border-radius:2px;
+  transition:background .25s !important;
+}
+.nav-cta:hover{background:var(--accent) !important;color:#fff !important;}
+@media(max-width:768px){.nav-links{display:none;}.nav{padding:1rem 1.5rem;}.nav.scrolled{padding:.75rem 1.5rem;}}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--bg) 0%,#E8EDF4 40%,var(--light) 100%);
+  display:flex;align-items:flex-end;
+  padding:0 4rem 6rem;
+  position:relative;overflow:hidden;
+}
+.hero-canvas{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;
+}
+.hero-geo{
+  position:absolute;
+  border:1px solid var(--primary);
+  opacity:.35;
+}
+.hero-geo-1{
+  width:520px;height:520px;border-radius:50%;
+  top:-80px;right:-80px;
+  animation:float1 12s ease-in-out infinite;
+}
+.hero-geo-2{
+  width:280px;height:280px;
+  top:20%;right:18%;
+  transform:rotate(30deg);
+}
+.hero-geo-3{
+  width:160px;height:160px;border-radius:50%;
+  bottom:25%;right:10%;
+  background:var(--primary);opacity:.15;
+}
+.hero-geo-4{
+  width:400px;height:1px;
+  top:42%;left:-40px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.4;
+}
+.hero-badge{
+  position:absolute;top:50%;right:6rem;transform:translateY(-50%);
+  width:160px;height:160px;
+  border:1px solid var(--rule);border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.3rem;
+  animation:spin 30s linear infinite;
+}
+.hero-badge span{
+  font-size:.55rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);font-weight:400;
+}
+.hero-badge strong{
+  font-family:var(--serif);font-size:2rem;font-weight:300;
+  color:var(--deep);line-height:1;
+}
+
+@keyframes spin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
+@keyframes float1{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.03) translateY(-20px)}}
+
+.hero-content{position:relative;z-index:2;max-width:780px;}
+.hero-eyebrow{
+  font-size:.6rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.6rem;
+  display:flex;align-items:center;gap:.8rem;
+  font-weight:400;
+}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--accent);}
+.hero-h1{
+  font-family:var(--serif);
+  font-size:clamp(4.5rem,9vw,9rem);
+  font-weight:300;line-height:.95;
+  letter-spacing:-2px;color:var(--deep);
+  margin-bottom:2.5rem;
+}
+.hero-h1 em{font-style:italic;color:var(--accent);font-weight:300;}
+.hero-h1 .indent{padding-left:5rem;}
+.hero-rule{width:64px;height:1px;background:var(--rule);margin-bottom:1.8rem;}
+.hero-p{
+  font-size:1rem;color:var(--muted);line-height:1.9;
+  font-weight:300;max-width:480px;margin-bottom:3rem;
+}
+.hero-actions{display:flex;align-items:center;gap:2rem;}
+.btn-primary{
+  font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;
+  background:var(--deep);color:#fff;
+  padding:.85rem 2.5rem;border:none;
+  font-family:var(--sans);font-weight:400;
+  cursor:none;text-decoration:none;
+  transition:background .25s,transform .2s;display:inline-block;
+}
+.btn-primary:hover{background:var(--accent);transform:translateY(-2px);}
+.btn-ghost{
+  font-size:.7rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--deep);text-decoration:none;
+  border-bottom:1px solid var(--rule);padding-bottom:2px;
+  font-weight:400;transition:border-color .2s,color .2s;
+}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.hero-scroll{
+  position:absolute;bottom:3rem;right:4rem;
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
+  font-size:.55rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);
+}
+.hero-scroll-line{
+  width:1px;height:60px;
+  background:linear-gradient(180deg,var(--accent),transparent);
+  animation:scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  background:var(--deep);
+  padding:1.1rem 0;overflow:hidden;
+}
+.marquee-track{
+  display:flex;gap:0;width:max-content;
+  animation:marquee 35s linear infinite;
+}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.m-item{
+  font-family:var(--serif);font-size:1rem;font-weight:300;font-style:italic;
+  color:rgba(255,255,255,.5);
+  padding:0 2.5rem;white-space:nowrap;
+  display:flex;align-items:center;gap:2.5rem;
+}
+.m-item::after{content:'·';color:var(--accent);font-style:normal;}
+
+/* ── SECTION BASE ── */
+section{padding:120px 0;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 4rem;}
+@media(max-width:768px){.wrap{padding:0 1.5rem;}}
+
+/* ── SECTION LABEL ── */
+.s-label{
+  font-size:.58rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.8rem;font-weight:400;
+  display:flex;align-items:center;gap:.8rem;
+}
+.s-label::before{content:'';width:28px;height:1px;background:var(--accent);}
+
+/* ── EDITORIAL 2-COL ── */
+.editorial{background:var(--bg);}
+.editorial-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;
+}
+@media(max-width:900px){.editorial-grid{grid-template-columns:1fr;gap:4rem;}}
+.ed-h2{
+  font-family:var(--serif);
+  font-size:clamp(2.5rem,4vw,4.2rem);
+  font-weight:300;line-height:1.1;
+  color:var(--deep);letter-spacing:-.5px;
+  margin:1rem 0 2rem;
+}
+.ed-h2 em{font-style:italic;color:var(--accent);}
+.ed-body{font-size:.9rem;color:var(--muted);line-height:2;font-weight:300;margin-bottom:1.5rem;}
+.ed-stat-row{
+  display:flex;gap:3rem;
+  border-top:1px solid var(--rule);
+  padding-top:2.5rem;margin-top:2.5rem;
+}
+.ed-stat-n{
+  font-family:var(--serif);font-size:3rem;font-weight:300;
+  color:var(--deep);line-height:1;display:block;
+}
+.ed-stat-l{font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:.5rem;display:block;}
+
+.editorial-right{padding-top:4rem;}
+.ed-img-frame{
+  aspect-ratio:3/4;
+  background:linear-gradient(145deg,#D6DDE8,var(--primary));
+  position:relative;overflow:hidden;margin-bottom:1.5rem;
+}
+.ed-img-inner{
+  position:absolute;inset:2rem;
+  background:linear-gradient(180deg,#E8EDF4,var(--light));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1rem;
+}
+.ed-img-inner span{
+  font-family:var(--serif);font-size:5rem;font-weight:300;color:var(--deep);opacity:.15;line-height:1;
+}
+.ed-img-inner p{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
+.ed-caption{font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* ── PROGRAMMES ── */
+.programmes{background:#EEF1F5;}
+.prog-head{margin-bottom:5rem;}
+.prog-h2{
+  font-family:var(--serif);font-size:clamp(2.5rem,4vw,4rem);
+  font-weight:300;color:var(--deep);
+  line-height:1.1;margin:1rem 0;
+}
+.prog-h2 em{font-style:italic;color:var(--accent);}
+.prog-sub{font-size:.88rem;color:var(--muted);line-height:1.8;max-width:480px;font-weight:300;}
+
+.prog-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  align-items:start;
+}
+.prog-grid .card:nth-child(2){margin-top:4rem;}
+.prog-grid .card:nth-child(3){margin-top:8rem;}
+@media(max-width:900px){
+  .prog-grid{grid-template-columns:1fr;}
+  .prog-grid .card:nth-child(2),.prog-grid .card:nth-child(3){margin-top:0;}
+}
+.card{
+  background:var(--bg);
+  padding:3rem 2.5rem;
+  border:1px solid var(--light);
+  position:relative;overflow:hidden;
+  transition:transform .4s cubic-bezier(.25,.46,.45,.94),
+             box-shadow .4s,border-color .4s;
+}
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 32px 64px rgba(30,61,82,.1);
+  border-color:var(--accent);
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--primary));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.card:hover::before{transform:scaleX(1);}
+.card-num{
+  font-family:var(--serif);font-size:6rem;font-weight:300;
+  color:var(--light);line-height:1;margin-bottom:1.5rem;
+  transition:color .3s;
+}
+.card:hover .card-num{color:var(--primary);}
+.card-tag{
+  font-size:.58rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.6rem;display:block;font-weight:400;
+}
+.card-title{
+  font-family:var(--serif);font-size:1.8rem;font-weight:400;
+  color:var(--deep);line-height:1.2;margin-bottom:1.2rem;
+}
+.card-body{font-size:.82rem;color:var(--muted);line-height:1.9;font-weight:300;}
+.card-arrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.62rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;margin-top:2rem;
+  border-bottom:1px solid transparent;transition:border-color .2s;
+}
+.card-arrow:hover{border-color:var(--accent);}
+
+/* ── PULL QUOTE ── */
+.pull-quote{background:var(--deep);padding:120px 0;}
+.pq-inner{max-width:900px;margin:0 auto;padding:0 4rem;text-align:center;}
+.pq-rule{width:40px;height:1px;background:var(--accent);margin:0 auto 3rem;}
+.pq-quote{
+  font-family:var(--serif);
+  font-size:clamp(2rem,4vw,3.8rem);
+  font-weight:300;font-style:italic;
+  color:#fff;line-height:1.35;
+  letter-spacing:-.3px;margin-bottom:3rem;
+}
+.pq-quote em{color:var(--primary);font-style:normal;}
+.pq-attr{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.pq-stats{
+  display:flex;justify-content:center;gap:6rem;
+  margin-top:5rem;padding-top:4rem;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+@media(max-width:600px){.pq-stats{gap:3rem;}}
+.pq-stat-n{font-family:var(--serif);font-size:3.5rem;font-weight:300;color:#fff;display:block;line-height:1;}
+.pq-stat-l{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.6rem;display:block;}
+
+/* ── FEATURES ── */
+.features{background:var(--bg);}
+.feat-h2{
+  font-family:var(--serif);font-size:clamp(2.5rem,3.5vw,3.8rem);
+  font-weight:300;color:var(--deep);
+  line-height:1.1;margin:1rem 0 5rem;max-width:600px;
+}
+.feat-h2 em{font-style:italic;color:var(--accent);}
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);}
+@media(max-width:800px){.feat-grid{grid-template-columns:1fr 1fr;}}
+.feat-item{
+  padding:2.5rem;border-right:1px solid var(--rule);
+  transition:background .3s;
+}
+.feat-item:last-child{border-right:none;}
+.feat-item:hover{background:#EEF1F5;}
+.feat-icon{font-size:1.5rem;margin-bottom:1.5rem;display:block;}
+.feat-title{font-family:var(--serif);font-size:1.1rem;font-weight:500;color:var(--deep);margin-bottom:.6rem;}
+.feat-body{font-size:.78rem;color:var(--muted);line-height:1.8;font-weight:300;}
+
+/* ── APPLY ── */
+.apply-section{background:var(--deep);padding:120px 0;}
+.apply-inner{max-width:820px;margin:0 auto;padding:0 4rem;text-align:center;}
+.apply-label{font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--primary);margin-bottom:1.2rem;display:block;font-weight:400;}
+.apply-h2{
+  font-family:var(--serif);font-size:clamp(2.5rem,5vw,5rem);
+  font-weight:300;font-style:italic;color:#fff;
+  line-height:1.1;margin-bottom:1.5rem;letter-spacing:-.5px;
+}
+.apply-p{font-size:.9rem;color:rgba(255,255,255,.4);line-height:1.9;font-weight:300;margin-bottom:4rem;}
+.apply-form{display:grid;gap:1rem;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+.form-group{display:flex;flex-direction:column;gap:.4rem;}
+.form-label{font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:400;}
+.form-input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:.85rem 1.2rem;font-family:var(--sans);font-size:.85rem;color:#fff;outline:none;transition:border-color .2s,background .2s;}
+.form-input::placeholder{color:rgba(255,255,255,.2);}
+.form-input:focus{border-color:var(--primary);background:rgba(255,255,255,.09);}
+.form-select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:.85rem 1.2rem;font-family:var(--sans);font-size:.85rem;color:#fff;outline:none;transition:border-color .2s;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235D84A0' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;cursor:none;}
+.form-select:focus{border-color:var(--primary);}
+.form-select option{background:var(--deep);color:#fff;}
+.form-textarea{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:.85rem 1.2rem;font-family:var(--sans);font-size:.85rem;color:#fff;outline:none;resize:vertical;min-height:100px;transition:border-color .2s;}
+.form-textarea::placeholder{color:rgba(255,255,255,.2);}
+.form-textarea:focus{border-color:var(--primary);}
+.form-submit{background:var(--primary);color:var(--deep);border:none;padding:1rem 3rem;font-family:var(--sans);font-size:.7rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;cursor:none;transition:background .25s,transform .2s;justify-self:start;margin-top:.5rem;}
+.form-submit:hover{background:#fff;transform:translateY(-2px);}
+.form-note{font-size:.68rem;color:rgba(255,255,255,.25);text-align:center;margin-top:1rem;}
+.form-note a{color:var(--primary);}
+
+/* ── CONTACT ── */
+.contact-section{background:var(--bg);padding:120px 0;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:4rem;}}
+.contact-h2{font-family:var(--serif);font-size:clamp(2.5rem,4vw,4rem);font-weight:300;color:var(--deep);line-height:1.1;margin:1rem 0 3rem;}
+.contact-h2 em{font-style:italic;color:var(--accent);}
+.c-item{display:flex;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--rule);}
+.c-item:first-child{border-top:1px solid var(--rule);}
+.c-icon{width:40px;height:40px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;transition:background .2s,border-color .2s;}
+.c-item:hover .c-icon{background:var(--primary);border-color:var(--primary);}
+.c-l{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;font-weight:400;}
+.c-v{font-size:.88rem;color:var(--text);line-height:1.6;}
+.c-v a{color:inherit;text-decoration:none;transition:color .2s;}
+.c-v a:hover{color:var(--accent);}
+.map-frame{aspect-ratio:4/3;background:linear-gradient(145deg,var(--light),var(--primary));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;position:relative;overflow:hidden;margin-bottom:1.5rem;}
+.map-frame::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(93,132,160,.15),transparent 70%);}
+.map-frame-icon{font-size:2rem;position:relative;z-index:1;}
+.map-frame-txt{font-family:var(--serif);font-size:1.1rem;color:var(--deep);text-align:center;position:relative;z-index:1;font-style:italic;}
+.map-btn{display:inline-flex;align-items:center;gap:.6rem;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--deep);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px;position:relative;z-index:1;font-weight:400;transition:border-color .2s,color .2s;}
+.map-btn:hover{border-color:var(--accent);color:var(--accent);}
+.soc-strip{display:flex;gap:1rem;margin-top:1.5rem;}
+.soc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem;border:1px solid var(--rule);font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:background .25s,border-color .25s,color .25s;font-weight:400;}
+.soc-btn:hover{background:var(--deep);border-color:var(--deep);color:#fff;}
+
+/* ── FOOTER ── */
+.footer{background:var(--deep);padding:5rem 4rem 3rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:4rem;margin-bottom:3rem;}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr;gap:3rem;}}
+.footer-brand-name{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:#fff;margin-bottom:.4rem;}
+.footer-brand-sub{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.footer-tagline{font-family:var(--serif);font-size:.95rem;font-style:italic;color:rgba(255,255,255,.35);line-height:1.8;margin-top:1.5rem;max-width:280px;font-weight:300;}
+.footer-col-title{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.5rem;font-weight:400;}
+.footer-links{display:flex;flex-direction:column;gap:.8rem;}
+.footer-links a{font-size:.8rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;font-weight:300;}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-copy{font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.5px;}
+.footer-copy span{color:rgba(255,255,255,.4);}
+.footer-lic{font-size:.6rem;letter-spacing:1px;color:rgba(255,255,255,.15);}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94);}
+.reveal.on{opacity:1;transform:none;}
+.reveal.d1{transition-delay:.1s;} .reveal.d2{transition-delay:.2s;} .reveal.d3{transition-delay:.3s;} .reveal.d4{transition-delay:.4s;}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .9s cubic-bezier(.25,.46,.45,.94),transform .9s cubic-bezier(.25,.46,.45,.94);}
+.reveal-left.on{opacity:1;transform:none;}
+
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <img class="nav-logo" id="navLogo" src="data:image/jpeg;base64,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" alt="โลโก้โรงเรียนอิสลาฮียะห์">
+    <div class="nav-logo-fallback" id="navFallback">Islah</div>
+    <a href="#" class="nav-brand">
+      <span class="nav-brand-main">Islahiah School</span>
+      <span class="nav-brand-sub">Est. 1946 · Yala, Thailand</span>
+    </a>
+  </div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#programmes">Programmes</a>
+    <a href="#contact">Contact</a>
+    <a href="#apply" class="nav-cta">Apply Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-canvas">
+    <div class="hero-geo hero-geo-1"></div>
+    <div class="hero-geo hero-geo-2"></div>
+    <div class="hero-geo hero-geo-3"></div>
+    <div class="hero-geo hero-geo-4"></div>
+  </div>
+  <div class="hero-badge" aria-hidden="true">
+    <span>Yala</span>
+    <strong>Islah</strong>
+    <span>Thailand</span>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Private Islamic School · Under OPEC</div>
+    <h1 class="hero-h1">
+      Shaping<br>
+      <span class="indent"><em>Leaders</em></span><br>
+      of Tomorrow
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-p">An integrated Islamic and academic education in Yala, Thailand — nurturing Muslim learners with knowledge, character, and faith since 1946.</p>
+    <div class="hero-actions">
+      <a href="#apply" class="btn-primary">Apply Now</a>
+      <a href="#about" class="btn-ghost">Discover More</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="m-item">Islahiah School</span>
+    <span class="m-item">Yala · Thailand</span>
+    <span class="m-item">Islamic &amp; Academic Excellence</span>
+    <span class="m-item">Founded 1946</span>
+    <span class="m-item">Boarding School</span>
+    <span class="m-item">Kindergarten to Grade 12</span>
+    <span class="m-item">Under OPEC</span>
+    <span class="m-item">TA · IA · IPAT</span>
+    <span class="m-item">Islahiah School</span>
+    <span class="m-item">Yala · Thailand</span>
+    <span class="m-item">Islamic &amp; Academic Excellence</span>
+    <span class="m-item">Founded 1946</span>
+    <span class="m-item">Boarding School</span>
+    <span class="m-item">Kindergarten to Grade 12</span>
+    <span class="m-item">Under OPEC</span>
+    <span class="m-item">TA · IA · IPAT</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="editorial" id="about">
+  <div class="wrap">
+    <div class="editorial-grid">
+      <div class="editorial-left reveal-left">
+        <div class="s-label">About the School</div>
+        <h2 class="ed-h2">A Foundation Built on <em>Faith &amp; Learning</em></h2>
+        <p class="ed-body">Islahiah School is a private Islamic school (Type 15/1) operating under the Office of the Private Education Commission (OPEC), Ministry of Education, Thailand. Originally founded as a pondok in 1946, formally registered in 1961, and continuously growing ever since.</p>
+        <p class="ed-body">We offer education from Kindergarten through Grade 12 as a full boarding school for both boys and girls, with strictly separated facilities in accordance with Islamic principles. Morning sessions are dedicated to Islamic studies; afternoons follow the Thai national curriculum.</p>
+        <p class="ed-body">The school occupies 32 rai in Sateng Nok, Mueang District, Yala — a campus designed for learning, community, and spiritual growth.</p>
+        <div class="ed-stat-row">
+          <div><span class="ed-stat-n">1946</span><span class="ed-stat-l">Year Founded</span></div>
+          <div><span class="ed-stat-n">32</span><span class="ed-stat-l">Rai Campus</span></div>
+          <div><span class="ed-stat-n">1,009</span><span class="ed-stat-l">Students</span></div>
+        </div>
+      </div>
+      <div class="editorial-right reveal d1">
+        <div class="ed-img-frame">
+          <div class="ed-img-inner">
+            <span>Islah</span>
+            <p>Est. 1946 · Yala</p>
+          </div>
+        </div>
+        <p class="ed-caption">78/1 M.4, Sateng Nok, Mueang, Yala 95000</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMMES -->
+<section class="programmes" id="programmes">
+  <div class="wrap">
+    <div class="prog-head reveal">
+      <div class="s-label">Programmes</div>
+      <h2 class="prog-h2">Three Pathways, <em>One Vision</em></h2>
+      <p class="prog-sub">Each programme blends Islamic learning with the full Thai national curriculum. Morning sessions are dedicated to Islamic studies; afternoons follow academic subjects.</p>
+    </div>
+    <div class="prog-grid">
+      <div class="card reveal d1">
+        <div class="card-num">TA</div>
+        <span class="card-tag">Tahfiz Academic</span>
+        <h3 class="card-title">Tahfiz Academic Programme</h3>
+        <p class="card-body">Full Quran memorisation integrated with the national curriculum. Students graduate as certified Huffaz alongside complete academic qualifications — the pinnacle of Islamic education.</p>
+        <a href="#apply" class="card-arrow">Enquire →</a>
+      </div>
+      <div class="card reveal d2">
+        <div class="card-num">IA</div>
+        <span class="card-tag">Islamic Academic</span>
+        <h3 class="card-title">Islamic Academic Programme</h3>
+        <p class="card-body">In-depth Islamic studies — Quran, Hadith, Fiqh, Arabic Language — combined with the complete Thai national curriculum. Producing graduates grounded in faith and scholarship.</p>
+        <a href="#apply" class="card-arrow">Enquire →</a>
+      </div>
+      <div class="card reveal d3">
+        <div class="card-num">IPAT</div>
+        <span class="card-tag">Advanced Track</span>
+        <h3 class="card-title">IPAT Programme</h3>
+        <p class="card-body">Islahiah's advanced integrated track blending Quran memorisation, Islamic studies, and a strengthened academic curriculum for students seeking the highest standard of achievement.</p>
+        <a href="#apply" class="card-arrow">Enquire →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<section class="pull-quote">
+  <div class="pq-inner reveal">
+    <div class="pq-rule"></div>
+    <blockquote class="pq-quote">
+      "Faith without <em>knowledge</em> is incomplete;<br>knowledge without faith is insufficient."
+    </blockquote>
+    <p class="pq-attr">Philosophy of Islahiah School · Yala, Thailand</p>
+    <div class="pq-stats">
+      <div><span class="pq-stat-n">K–12</span><span class="pq-stat-l">Grade Levels</span></div>
+      <div><span class="pq-stat-n">24 / 7</span><span class="pq-stat-l">Student Care</span></div>
+      <div><span class="pq-stat-n">2</span><span class="pq-stat-l">Core Curricula</span></div>
+      <div><span class="pq-stat-n">37</span><span class="pq-stat-l">Teachers</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="wrap">
+    <div class="s-label reveal">School Life</div>
+    <h2 class="feat-h2 reveal">Life at Islahiah — <em>Discipline, Community &amp; Growth</em></h2>
+    <div class="feat-grid">
+      <div class="feat-item reveal d1">
+        <span class="feat-icon">🕌</span>
+        <div class="feat-title">Morning — Islamic Studies</div>
+        <p class="feat-body">Quran · Hadith · Fiqh · Arabic · Akhlaq. Every morning from 08:00 to 12:00, students immerse in the Islamic sciences.</p>
+      </div>
+      <div class="feat-item reveal d2">
+        <span class="feat-icon">📚</span>
+        <div class="feat-title">Afternoon — Academic Studies</div>
+        <p class="feat-body">Thai · English · Mathematics · Science · Social Studies. Full national core curriculum from 13:00 to 17:00.</p>
+      </div>
+      <div class="feat-item reveal d3">
+        <span class="feat-icon">🏠</span>
+        <div class="feat-title">Boarding &amp; Community</div>
+        <p class="feat-body">24-hour supervised dormitories with fully separated boys' and girls' facilities. A second home built on trust and care.</p>
+      </div>
+      <div class="feat-item reveal d4">
+        <span class="feat-icon">🏆</span>
+        <div class="feat-title">Awards &amp; Recognition</div>
+        <p class="feat-body">Royal Award recipient · I-NET perfect scores · Multiple provincial and national competition champions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section class="apply-section" id="apply">
+  <div class="apply-inner">
+    <span class="apply-label">Admissions 2568</span>
+    <h2 class="apply-h2">Begin Your Journey</h2>
+    <p class="apply-p">Fill in the form below. Our admissions team will contact you within 2 working days.</p>
+    <form class="apply-form" name="admissions" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="admissions">
+      <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Student Name *</label>
+          <input class="form-input" name="student_name" type="text" placeholder="Full name (as on ID)" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Birth *</label>
+          <input class="form-input" name="dob" type="date" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Programme *</label>
+          <select class="form-select" name="programme" required>
+            <option value="">— Select Programme —</option>
+            <option value="TA">TA — Tahfiz Academic</option>
+            <option value="IA">IA — Islamic Academic</option>
+            <option value="IPAT">IPAT — Advanced Programme</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Grade Applying For *</label>
+          <select class="form-select" name="grade" required>
+            <option value="">— Select Grade —</option>
+            <option>Kindergarten 1</option><option>Kindergarten 2</option><option>Kindergarten 3</option>
+            <option>Primary 1</option><option>Primary 2</option><option>Primary 3</option>
+            <option>Primary 4</option><option>Primary 5</option><option>Primary 6</option>
+            <option>Secondary 1 (ม.1)</option><option>Secondary 2 (ม.2)</option><option>Secondary 3 (ม.3)</option>
+            <option>Secondary 4 (ม.4)</option><option>Secondary 5 (ม.5)</option><option>Secondary 6 (ม.6)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Parent / Guardian *</label>
+          <input class="form-input" name="parent_name" type="text" placeholder="Full name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input class="form-input" name="phone" type="tel" placeholder="08x-xxx-xxxx" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" name="email" type="email" placeholder="parent@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes / Questions</label>
+        <textarea class="form-textarea" name="notes" placeholder="Any questions or information you'd like to share..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Submit Application →</button>
+      <p class="form-note">We will contact you at the phone number provided within 2 working days.<br>Urgent enquiries: <a href="tel:0850818983">085-081-8983</a> or <a href="mailto:islahiah@islahiah.ac.th">islahiah@islahiah.ac.th</a></p>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="reveal-left">
+        <div class="s-label">Get in Touch</div>
+        <h2 class="contact-h2">Find <em>Islahiah</em></h2>
+        <div class="c-item">
+          <div class="c-icon">📍</div>
+          <div>
+            <div class="c-l">Address</div>
+            <div class="c-v">78/1 M.4, Sateng Nok, Mueang District<br>Yala 95000, Thailand</div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📞</div>
+          <div>
+            <div class="c-l">Phone</div>
+            <div class="c-v"><a href="tel:0850818983">085-081-8983</a> &nbsp;·&nbsp; <a href="tel:073202279">073-202-279</a></div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📧</div>
+          <div>
+            <div class="c-l">Email</div>
+            <div class="c-v"><a href="mailto:islahiah@islahiah.ac.th">islahiah@islahiah.ac.th</a></div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">👤</div>
+          <div>
+            <div class="c-l">License Holder</div>
+            <div class="c-v">Mr. Furqon Bungtahyong</div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">🪪</div>
+          <div>
+            <div class="c-l">License No. &amp; Affiliation</div>
+            <div class="c-v">1/1990 · OPEC, Ministry of Education</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal d1">
+        <div class="map-frame">
+          <div class="map-frame-icon">🗺️</div>
+          <div class="map-frame-txt">78/1 M.4, Sateng Nok<br>Mueang, Yala 95000</div>
+          <a href="https://maps.google.com/?q=โรงเรียนอิสลาฮียะห์+ยะลา" target="_blank" class="map-btn" style="margin-top:.5rem;">Open in Google Maps →</a>
+        </div>
+        <div class="soc-strip">
+          <a href="https://www.facebook.com/Islahiah2560/" target="_blank" class="soc-btn">📘 Facebook</a>
+          <a href="tel:0850818983" class="soc-btn">📞 Call Us</a>
+          <a href="mailto:islahiah@islahiah.ac.th" class="soc-btn">✉️ Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Islahiah School</div>
+      <div class="footer-brand-sub">โรงเรียนอิสลาฮียะห์ · Yala, Thailand</div>
+      <p class="footer-tagline">"Steadfast in faith, relentless in knowledge, unwavering in purpose."</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigate</div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#programmes">Programmes</a>
+        <a href="#apply">Admissions</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Programmes</div>
+      <div class="footer-links">
+        <a href="#programmes">TA — Tahfiz Academic</a>
+        <a href="#programmes">IA — Islamic Academic</a>
+        <a href="#programmes">IPAT Programme</a>
+        <a href="#apply">Apply Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 <span>Islahiah School</span> · Yala, Thailand · License No. 1/1990</div>
+    <div class="footer-lic">islahiah.ac.th</div>
+  </div>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+const animRing = () => { rx += (mx-rx)*.12; ry += (my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); };
+animRing();
+document.querySelectorAll('a,button,.card,.feat-item,.c-item,.soc-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));
+});
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', window.scrollY>60); });
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('on'), i*60); });
+},{threshold:.1});
+document.querySelectorAll('.reveal,.reveal-left').forEach(el=>obs.observe(el));
+
+const logo = document.getElementById('navLogo');
+const fallback = document.getElementById('navFallback');
+logo.onerror = function(){ this.style.display='none'; fallback.style.display='flex'; };
+</script>
+</body>
+</html>
